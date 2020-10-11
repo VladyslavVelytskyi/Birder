@@ -1,0 +1,138 @@
+/* helpers */
+/* base styles */
+/* common styles */
+body {
+  background-image: url(images/loading_background.jpg);
+  background-repeat: no-repeat;
+  /* Do not repeat the image */
+  background-size: cover;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header {
+  background-color: #000000;
+  height: 50px;
+  width: 100%;
+  padding: 10px 15px;
+  position: fixed;
+  z-index: 100;
+}
+.header--hidden {
+  opacity: 0;
+  transition: all 0.5s 0.5s linear;
+}
+.header--visible {
+  transition: all 0.5s linear;
+  opacity: 1;
+}
+.header.header--open {
+  background-color: transparent;
+  height: 100%;
+  transition: all 0.5s linear;
+}
+.header.header--open .header__menu-button .header__menu-bar {
+  background-color: #000000;
+}
+.header.header--open .header__menu-button .header__menu-bar--1 {
+  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-4px, 4px);
+  transform: rotate(-45deg) translate(-4px, 4px);
+}
+.header.header--open .header__menu-button .header__menu-bar--2 {
+  -webkit-transform: rotate(45deg) translate(-3px, -3px);
+  transform: rotate(45deg) translate(-3px, -3px);
+}
+.header.header--open .nav-container {
+  opacity: 1;
+  transition: all 0.5s linear;
+  transform: translateY(0);
+}
+.header__menu-button {
+  display: inline-block;
+  cursor: pointer;
+}
+.header__menu-button-open .header__menu-bar {
+  background-color: #000000;
+  transition: all 1s linear;
+}
+.header__menu-button-open .header__menu-bar--1 {
+  width: 20px;
+  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+  transform: rotate(-45deg) translate(-4px, 4px);
+}
+.header__menu-button-open .header__menu-bar--2 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+  transform: rotate(45deg) translate(-3px, -3px);
+}
+.header__menu-bar {
+  width: 15px;
+  height: 4px;
+  background-color: #ffffff;
+  margin: 6px 0;
+  transition: 0.4s;
+}
+.header__menu-bar--2 {
+  width: 20px;
+}
+.header .nav-container {
+  opacity: 0;
+  transition: all 0.5s linear;
+  transform: translateY(-500px);
+}
+.header .nav-container__logo {
+  width: 80px;
+  height: 74px;
+  background-image: url(images/LOGO_BIRDER_black.png);
+  background-size: cover;
+  background-position: center;
+  margin: 35px auto;
+}
+.header .nav-container .nav__list {
+  list-style: none;
+  text-align: center;
+}
+.header .nav-container .nav__list-item {
+  margin-bottom: 30px;
+}
+.header .nav-container .nav__list-item a {
+  color: black;
+  font: bold 25px sans-serif;
+  text-decoration: none;
+}
+.main {
+  width: 100vw;
+  height: 100vh;
+}
+.main .enter {
+  width: 100%;
+  height: 100%;
+  padding: 180px 0;
+}
+.main .enter__logo {
+  width: 125px;
+  height: 115px;
+  margin: 0 auto;
+  background-image: url(images/LOGO_BIRDER_white.png);
+  background-position: center;
+  background-size: cover;
+  margin-bottom: 30px;
+}
+.main .enter__title {
+  text-align: center;
+  color: #ffffff;
+  font-size: 45px;
+  opacity: 1;
+}
+.main .enter--action .enter__logo {
+  opacity: 0;
+  transform: rotate(-25deg) translateX(500px);
+  transition: all 0.5s linear;
+}
+.main .enter--action .enter__title {
+  opacity: 0;
+  transition: all 0.5s linear;
+}
+

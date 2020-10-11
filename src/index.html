@@ -17,32 +17,58 @@
     </div>
     
     <div class="nav-container">
-      <div class="nav-container__logo"></div>
+      <a class="nav-container__logo" href="#listenBox"></a>
       <nav class="nav">
         <ul class="nav__list">
-          <li class="nav__list-item"><a href="#">Historia</a></li>
-          <li class="nav__list-item"><a href="#">Zachowane</a></li>
-          <li class="nav__list-item"><a href="#">Ustawienia</a></li>
-          <li class="nav__list-item"><a href="#">O aplikacii</a></li>
+          <li class="nav__list-item"><a href="#history">Historia</a></li>
+          <li class="nav__list-item"><a href="#save">Zachowane</a></li>
+          <li class="nav__list-item"><a href="#settings">Ustawienia</a></li>
+          <li class="nav__list-item"><a href="#app">O aplikacii</a></li>
         </ul>
       </nav>
-
     </div>
-    
   </header>
 
- 
   <main class="main">
     <section class="enter" id="enter">
       <div class="enter__logo"></div>
       <h1 class="enter__title">BIRDER</h1>
     </section>
 
-    <section class="listen-box">
-      <div class="listen-box__container">
-
+    <section class="listen-box main__block display-none" id="listenBox">
+      <div class="block__container">
+          <div class="loader">
+            
+            <div class="loader__piece left"></div>
+            <div class="loader__piece right"></div>
+            <div class="loader__logo"></div>
+          </div>
+      </div>
+        <button class="listen-box__button" id="startListen">Start</button>
+        <button class="listen-box__button display-none" id="stopListen">Stop</button>
       </div>
     </section>
+
+    <section class="history main__block display-none" id="history">
+      <h1>Historia</h1>
+      <!-- place for 'Historia' content-->
+    </section>
+
+    <section class="save main__block display-none" id="save">
+      <h1>Zachowane</h1>
+      <!-- place for 'Zachowane' content-->
+    </section>
+
+    <section class="settings main__block display-none" id="settings">
+      <h1>Ustawienia</h1>
+      <!-- place for 'Ustawienia' content-->
+    </section>
+
+    <section class="app main__block display-none" id="app">
+      <h1>O aplikacii</h1>
+      <!-- place for 'O aplikacii' content-->
+    </section>
+
   </main>
 
   <script src="/bundle.js"></script>
