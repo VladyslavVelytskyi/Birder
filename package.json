@@ -1,10 +1,12 @@
 {
   "name": "Birder",
   "description": "Application to check what is the bird singing",
-  "author": "Alexandr Pyatkin",
+  "author": "Alexandr Piatkin",
   "contributors": [
-    "Vladyslav Velytaskyi"
+    "Vladyslav Velytaskyi",
+    "Anton Lytvynovskyi"
   ],
+  "version": "1.0.0",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --open"
@@ -21,5 +23,8 @@
     "webpack": "^4.16.2",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "recorder-js": "^1.0.7"
   }
 }
