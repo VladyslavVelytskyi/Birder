@@ -2,6 +2,12 @@
 require('../../src/assets/less/main.less'); // include general styles
 
 
+var gumStream; 						//stream from getUserMedia()
+var rec; 							//Recorder.js object
+var input; 	
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext;
+
 class Header {
   constructor(toggleMenu) {
     this.menuButton = document.getElementById('menu-button');
@@ -18,22 +24,24 @@ class Header {
 class ListenBlock {
   constructor() {
     this.startListenButton = document.getElementById('startListen');
-    this.stopListenButton = document.getElementById('stopListen');
+    //this.stopListenButton = document.getElementById('stopListen');
     this.loaderBox = document.querySelector('.loader');
 
     this.mediaRecorder;
     this.intervalId;
 
     this.angle = 0;
-
+    this.listen();
     this.startListenButton.addEventListener('click', this.onStart.bind(this));
-    this.stopListenButton.addEventListener('click', this.onStop.bind(this));
+    //this.stopListenButton.addEventListener('click', this.onStop.bind(this));
   }
 
   onStart() {
-    this.listen();
+    this.startRecording();
     this.swapButtons();
     this.intervalId = setInterval(this.rotate.bind(this), 10);
+
+    setTimeout(this.onStop.bind(this), 6000);
   }
 
   onStop() {
@@ -41,23 +49,26 @@ class ListenBlock {
     this.swapButtons();
     this.rotate(360);
     this.angle = 0;
-
+    this.stopRecording();
+    /*
     if (this.mediaRecorder.state !== 'inactive') {
       this.mediaRecorder.stop();
     }
+    */
   }
 
   listen() {
     const self = this;
-
+/*
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream => {
         this.mediaRecorder = new MediaRecorder(stream);
-        this.mediaRecorder.start();
+
   
         const chunk = [];
   
         this.mediaRecorder.addEventListener('dataavailable', e => {
+          console.log(chunk);
           chunk.push(e.data);
         });
   
@@ -76,15 +87,92 @@ class ListenBlock {
           })
             .then(response => response.json())
             .then(data => {
+              renderBird(data);
               //place for render function which should draw Bird Page
+              // { name, description. imageUrl }
               console.log(data);
             })
             .catch(e => console.log(e));
         });
   
-        setTimeout(this.onStop.bind(this), 5000);
+        setTimeout(this.onStop.bind(this), 6000);
       }).bind(self))
       .catch(e => console.log(`Error: ${e}`));
+
+      */
+    /*navigator.mediaDevices.getUserMedia({audio: true})
+      .then(stream => recorder.init(stream))
+      .catch(err => console.log('Uh oh... unable to get stream...', err));
+ */
+    
+  }
+
+  startRecording() {
+    var constraints = { audio: true, video:false }
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+      console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+  
+      /*
+        create an audio context after getUserMedia is called
+        sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
+        the sampleRate defaults to the one set in your OS for your playback device
+      */
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  
+      //update the format 
+      //document.getElementById("formats").innerHTML="Format: 1 channel pcm @ "+audioContext.sampleRate/1000+"kHz"
+  
+      /*  assign to gumStream for later use  */
+      gumStream = stream;
+      
+      /* use the stream */
+      input = audioContext.createMediaStreamSource(stream);
+  
+      /* 
+        Create the Recorder object and configure to record mono sound (1 channel)
+        Recording 2 channels  will double the file size
+      */
+      rec = new Recorder(input,{numChannels:1})
+      console.log(rec);
+      //start the recording process
+      rec.record()
+  
+      console.log("Recording started");
+  
+    }).catch(function(err) {
+        //enable the record button if getUserMedia() fails
+        //recordButton.disabled = false;
+        //stopButton.disabled = true;
+        //pauseButton.disabled = true
+        console.log(err);
+    });
+  }
+
+  stopRecording() {
+    rec.stop();
+  
+    gumStream.getAudioTracks()[0].stop();
+
+    rec.exportWAV((blob) => {
+      const fd = new FormData();
+
+      fd.append('audio_data', blob, new Date().toISOString());
+      console.log(blob);
+      fetch('http://127.0.0.1:5000/uploadfile', {
+        method: 'POST',
+        body: fd,
+        mode: 'no-cors',
+      })
+        .then(response => response.json())
+        .then(data => {
+         
+          //place for render function which should draw Bird Page
+          // { name, description. imageUrl }
+          console.log(data);
+        })
+        .catch(e => console.log(e));
+    });
   }
 
   rotate(angle) {
@@ -102,12 +190,12 @@ class ListenBlock {
       this.loaderBox.classList.remove('over_50');
     }
 
-    this.angle += 0.72;
+    this.angle += 0.6; //
   };
 
   swapButtons() {
     this.startListenButton.classList.toggle('display-none');
-    this.stopListenButton.classList.toggle('display-none');
+    //this.stopListenButton.classList.toggle('display-none');
   }
 }
 
@@ -151,6 +239,7 @@ class Router {
       new Route('#settings'),
       new Route('#save'),
       new Route('#listenBox'),
+      //new Route('#bird'),
     ];
   }
 }
